@@ -1,3 +1,4 @@
+// Entidad que representa una película en la aplicación
 class Movie {
   final bool adult;
   final String backdropPath;
