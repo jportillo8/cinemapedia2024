@@ -38,7 +38,6 @@ class MoviesNotifier extends StateNotifier<List<Movie>> {
     state = [...state, ...movies];
     await Future.delayed(const Duration(milliseconds: 300));
     isLoading = false;
-    print('Cargando página $currentPage');
   }
 }
 

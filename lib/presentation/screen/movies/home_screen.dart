@@ -1,3 +1,4 @@
+import 'package:cinemapedia_app/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,6 +36,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
     final nowPlayingMoviesState = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(moviesSlideshowProvider);
+    final dateNow = HumanFormats.date(DateTime.now().toString());
     return CustomScrollView(
       slivers: [
         const SliverAppBar(
@@ -59,7 +61,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                       },
                       movies: nowPlayingMoviesState,
                       title: 'En cines',
-                      subtitle: 'Lunes 20'),
+                      subtitle: dateNow),
                   MovieHorizontalListview(
                       loadNextPage: () {
                         ref
@@ -69,7 +71,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                       movies: nowPlayingMoviesState,
                       title: 'En cines',
                       subtitle: 'Lunes 20'),
-                  SizedBox(height: 20)
+                  const SizedBox(height: 20)
                 ],
               );
             },

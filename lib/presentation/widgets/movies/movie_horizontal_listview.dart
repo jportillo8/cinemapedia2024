@@ -2,7 +2,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia_app/config/helpers/human_formats.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
   final List<Movie> movies;
@@ -113,29 +112,49 @@ class _Slide extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /* Imagen */
-          SizedBox(
-            width: 150,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network(
-                movie.posterPath,
-                height: 200,
-                width: 150,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                          heightFactor: 5, child: CircularProgressIndicator()),
-                    );
-                  }
-                  return FadeIn(child: child);
-                },
+          Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                child: SizedBox(
+                  width: 150,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      movie.posterPath,
+                      height: 200,
+                      width: 150,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress != null) {
+                          return const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                                heightFactor: 5,
+                                child: CircularProgressIndicator()),
+                          );
+                        }
+                        return FadeIn(child: child);
+                      },
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: _VoteAverage(movie: movie)),
+              ),
+            ],
           ),
-          const SizedBox(height: 5),
           /* Titulo */
           SizedBox(
             width: 150,
@@ -169,6 +188,42 @@ class _Slide extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// TODO: Mover a otro archivo
+class _VoteAverage extends StatelessWidget {
+  final Movie movie;
+  const _VoteAverage({
+    required this.movie,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CircularProgressIndicator(
+          value: movie.voteAverage / 10,
+          strokeWidth: 3,
+          valueColor: AlwaysStoppedAnimation(movie.voteAverage > 7
+              ? Colors.green
+              : movie.voteAverage > 5
+                  ? Colors.yellow
+                  : Colors.red),
+          color: Colors.black,
+          backgroundColor: Colors.black.withOpacity(0.4),
+        ),
+        Positioned(
+          top: 8,
+          left: 6,
+          child: Text('${HumanFormats.percentage(movie.voteAverage)}%',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Colors.white)),
+        ),
+      ],
     );
   }
 }

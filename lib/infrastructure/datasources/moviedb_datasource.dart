@@ -13,7 +13,7 @@ class MoviedbDatasource extends MoviesDataSource {
     baseUrl: 'https://api.themoviedb.org/3',
     queryParameters: {
       'api_key': 'ca4f8fb2912abdfc5f99a2fbde92ffa2',
-      'language': 'en-MX',
+      'language': 'es-MX',
     },
   ));
   // Implementación del método getNowPlaying
