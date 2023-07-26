@@ -16,6 +16,54 @@ class MoviedbDatasource extends MoviesDataSource {
       'language': 'es-MX',
     },
   ));
+
+  // Mapeo de la respuesta a una lista de objetos Movie y retorno de la lista
+  List<Movie> _jsonToMovieList(Map<String, dynamic> json) {
+    final movieDBResponse = MovieDBResponse.fromJson(json);
+    final List<Movie> movies = movieDBResponse.results
+        .where((moviedb) => moviedb.posterPath != 'no-poster')
+        .map((moviedb) => MovieMapper.movieDBEntity(moviedb))
+        .toList();
+    return _removeMoviesWithoutPoster(movies);
+  }
+
+  // Reordenamiento de la lista de películas por fecha de estreno
+  List<Movie> _sortMoviesByDate(List<Movie> movies) {
+    movies.sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
+    return movies;
+  }
+
+  // Reordenamiento de la lista de películas por popularidad
+  List<Movie> _sortMoviesByPopularity(List<Movie> movies) {
+    movies.sort((a, b) => b.popularity.compareTo(a.popularity));
+    return movies;
+  }
+
+  // Remover las películas con más de 10 años de antigüedad
+  List<Movie> _removeMoviesByAge(List<Movie> movies) {
+    final ageActual = DateTime.now().year - 5;
+    // Gurda la lista de peliculas sin quitar las peliculas
+    List<Movie> listSinQuitarMovies = [];
+    listSinQuitarMovies.addAll(movies);
+    movies.removeWhere((movie) => movie.releaseDate.year < ageActual);
+
+    if (movies.length < 3) {
+      listSinQuitarMovies
+          .sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
+      print(listSinQuitarMovies.sublist(0, 3).length);
+      return listSinQuitarMovies.sublist(0, 3);
+    } else {
+      print(movies.length);
+      return movies;
+    }
+  }
+
+  // Remover las peliculas sin poster
+  List<Movie> _removeMoviesWithoutPoster(List<Movie> movies) {
+    movies.removeWhere((movie) => movie.posterPath == 'no-poster');
+    return movies;
+  }
+
   // Implementación del método getNowPlaying
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
@@ -23,13 +71,34 @@ class MoviedbDatasource extends MoviesDataSource {
     final response = await dio.get('/movie/now_playing', queryParameters: {
       'page': page,
     });
+    final List<Movie> movies = _jsonToMovieList(response.data);
+    return _sortMoviesByDate(movies);
+  }
 
-    // Mapeo de la respuesta a una lista de objetos Movie y retorno de la lista
-    final movieDBResponse = MovieDBResponse.fromJson(response.data);
-    final List<Movie> movies = movieDBResponse.results
-        .where((moviedb) => moviedb.posterPath != 'no-poster')
-        .map((moviedb) => MovieMapper.movieDBEntity(moviedb))
-        .toList();
-    return movies;
+  @override
+  Future<List<Movie>> getPopular({int page = 1}) async {
+    final response = await dio.get('/movie/popular', queryParameters: {
+      'page': page,
+    });
+    final List<Movie> movies = _jsonToMovieList(response.data);
+    return _sortMoviesByPopularity(movies);
+  }
+
+  @override
+  Future<List<Movie>> getUpcoming({int page = 1}) async {
+    final response = await dio.get('/movie/upcoming', queryParameters: {
+      'page': page,
+    });
+    final List<Movie> movies = _jsonToMovieList(response.data);
+    return _sortMoviesByDate(movies);
+  }
+
+  @override
+  Future<List<Movie>> getTopRated({int page = 1}) async {
+    final response = await dio.get('/movie/top_rated', queryParameters: {
+      'page': page,
+    });
+    final List<Movie> movies = _jsonToMovieList(response.data);
+    return _removeMoviesByAge(movies);
   }
 }

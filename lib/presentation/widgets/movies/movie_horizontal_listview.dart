@@ -61,7 +61,7 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, int index) =>
-                  _Slide(movie: widget.movies[index]),
+                  FadeInRightBig(child: _Slide(movie: widget.movies[index])),
             ),
           ),
         ],
@@ -143,15 +143,7 @@ class _Slide extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: Container(
-                    width: 50,
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: _VoteAverage(movie: movie)),
+                child: _VoteAverage(movie: movie),
               ),
             ],
           ),
@@ -201,29 +193,40 @@ class _VoteAverage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        CircularProgressIndicator(
-          value: movie.voteAverage / 10,
-          strokeWidth: 3,
-          valueColor: AlwaysStoppedAnimation(movie.voteAverage > 7
-              ? Colors.green
-              : movie.voteAverage > 5
-                  ? Colors.yellow
-                  : Colors.red),
-          color: Colors.black,
-          backgroundColor: Colors.black.withOpacity(0.4),
-        ),
-        Positioned(
-          top: 8,
-          left: 6,
-          child: Text('${HumanFormats.percentage(movie.voteAverage)}%',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Colors.white)),
-        ),
-      ],
+    final style =
+        Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white);
+    final boxDecoration = BoxDecoration(
+      color: Colors.black.withOpacity(0.7),
+      borderRadius: BorderRadius.circular(50),
+    );
+    return Container(
+      width: 50,
+      height: 50,
+      alignment: Alignment.center,
+      decoration: boxDecoration,
+      child: Stack(
+        children: [
+          CircularProgressIndicator(
+            value: movie.voteAverage / 10,
+            strokeWidth: 3,
+            valueColor: AlwaysStoppedAnimation(movie.voteAverage > 7
+                ? Colors.green
+                : movie.voteAverage > 5
+                    ? Colors.yellow
+                    : Colors.red),
+            color: Colors.black,
+            backgroundColor: Colors.black.withOpacity(0.4),
+          ),
+          Positioned(
+            top: 8,
+            left: 6,
+            child: Text(
+              '${HumanFormats.percentage(movie.voteAverage)}%',
+              style: style,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -8,7 +8,7 @@ import 'movies_providers.dart';
 // nowPlayingMoviesProvider es un StateNotifierProvider que retorna un MoviesNotifier
 // movieRepositoryProvider es un Provider que retorna un MovieRepository
 final moviesSlideshowProvider = Provider<List<Movie>>((ref) {
-  final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+  final nowPlayingMovies = ref.watch(popularMoviesProvider);
 
   if (nowPlayingMovies.isEmpty) return [];
   // Se retorna una lista de 6 películas
