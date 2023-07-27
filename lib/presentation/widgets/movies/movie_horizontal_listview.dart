@@ -184,7 +184,6 @@ class _Slide extends StatelessWidget {
   }
 }
 
-// TODO: Mover a otro archivo
 class _VoteAverage extends StatelessWidget {
   final Movie movie;
   const _VoteAverage({

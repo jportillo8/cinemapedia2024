@@ -9,6 +9,8 @@ class FullScreenLoader extends StatelessWidget {
     'Esto esta tardando más de lo esperado :(',
   ];
 
+  FullScreenLoader({super.key});
+
   Stream<String> getLoadingMessages() {
     return Stream.periodic(const Duration(milliseconds: 1200), (int step) {
       return message[step];
@@ -21,7 +23,7 @@ class FullScreenLoader extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Cargando películas'),
+          const Text('Cargando películas'),
           const SizedBox(height: 10),
           const CircularProgressIndicator(),
           const SizedBox(height: 10),

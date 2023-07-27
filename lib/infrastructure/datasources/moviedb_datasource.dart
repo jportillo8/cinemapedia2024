@@ -24,50 +24,43 @@ class MoviedbDatasource extends MoviesDataSource {
         .where((moviedb) => moviedb.posterPath != 'no-poster')
         .map((moviedb) => MovieMapper.movieDBEntity(moviedb))
         .toList();
-    return _removeMoviesWithoutPoster(movies);
+    movies.removeWhere((movie) => movie.posterPath == 'no-poster');
+    return movies;
   }
 
-  // Reordenamiento de la lista de películas por fecha de estreno
+  // Organización de la lista de películas por fecha de lanzamiento
   List<Movie> _sortMoviesByDate(List<Movie> movies) {
     movies.sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
     return movies;
   }
 
-  // Reordenamiento de la lista de películas por popularidad
+  // Organización de la lista de películas por popularidad
   List<Movie> _sortMoviesByPopularity(List<Movie> movies) {
     movies.sort((a, b) => b.popularity.compareTo(a.popularity));
     return movies;
   }
 
-  // Remover las películas con más de 10 años de antigüedad
+  // Remover las peliculas con fecha de lanzamiento menor a 5 años
   List<Movie> _removeMoviesByAge(List<Movie> movies) {
     final ageActual = DateTime.now().year - 5;
     // Gurda la lista de peliculas sin quitar las peliculas
-    List<Movie> listSinQuitarMovies = [];
-    listSinQuitarMovies.addAll(movies);
+    List<Movie> listWithoutRemovingMovies = [];
+    listWithoutRemovingMovies.addAll(movies);
     movies.removeWhere((movie) => movie.releaseDate.year < ageActual);
 
     if (movies.length < 3) {
-      listSinQuitarMovies
+      listWithoutRemovingMovies
           .sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
-      print(listSinQuitarMovies.sublist(0, 3).length);
-      return listSinQuitarMovies.sublist(0, 3);
+      return listWithoutRemovingMovies.sublist(0, 3);
     } else {
-      print(movies.length);
       return movies;
     }
   }
 
-  // Remover las peliculas sin poster
-  List<Movie> _removeMoviesWithoutPoster(List<Movie> movies) {
-    movies.removeWhere((movie) => movie.posterPath == 'no-poster');
-    return movies;
-  }
-
+// -----------------------------------------------------------------------------
   // Implementación del método getNowPlaying
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    // Petición GET a la API de The Movie DB
     final response = await dio.get('/movie/now_playing', queryParameters: {
       'page': page,
     });
