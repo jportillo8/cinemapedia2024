@@ -10,4 +10,6 @@ abstract class MoviesRepository {
 
   // Información de una película
   Future<Movie> getMovieById(String id);
+  // Buscar películas
+  Future<List<Movie>> searchMovies(String query);
 }
