@@ -1,3 +1,4 @@
+import 'package:cinemapedia_app/infrastructure/models/moviedb/movie_details.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cinemapedia_app/domain/datasources/movies_datasource.dart';
@@ -38,6 +39,22 @@ class MoviedbDatasource extends MoviesDataSource {
   List<Movie> _sortMoviesByPopularity(List<Movie> movies) {
     movies.sort((a, b) => b.popularity.compareTo(a.popularity));
     return movies;
+  }
+
+  // Remover las peliculas con fecha de lanzaamiento mayor a la fecha actual
+  List<Movie> _removeMoviesByDate(List<Movie> movies) {
+    final dateActual = DateTime.now();
+    List<Movie> listWithoutRemovingMovies = [];
+    listWithoutRemovingMovies.addAll(movies);
+    movies.removeWhere((movie) => movie.releaseDate.isBefore(dateActual));
+
+    if (movies.length < 3) {
+      listWithoutRemovingMovies
+          .sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
+      return listWithoutRemovingMovies.sublist(0, 3);
+    } else {
+      return movies;
+    }
   }
 
   // Remover las peliculas con fecha de lanzamiento menor a 5 años
@@ -83,7 +100,7 @@ class MoviedbDatasource extends MoviesDataSource {
       'page': page,
     });
     final List<Movie> movies = _jsonToMovieList(response.data);
-    return _sortMoviesByDate(movies);
+    return _removeMoviesByDate(movies);
   }
 
   @override
@@ -93,5 +110,18 @@ class MoviedbDatasource extends MoviesDataSource {
     });
     final List<Movie> movies = _jsonToMovieList(response.data);
     return _removeMoviesByAge(movies);
+  }
+
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('/movie/$id');
+    if (response.statusCode != 200) {
+      throw Exception('Movie with id: $id not found');
+    }
+
+    final movieDb = MovieDetails.fromJson(response.data);
+    final Movie movie = MovieMapper.movieDetailsToEntity(movieDb);
+
+    return movie;
   }
 }

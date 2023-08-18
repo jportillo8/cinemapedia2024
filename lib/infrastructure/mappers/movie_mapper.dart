@@ -1,3 +1,5 @@
+import 'package:cinemapedia_app/infrastructure/models/moviedb/movie_details.dart';
+
 import '../../domain/entities/movie.dart';
 import '../models/moviedb/movie_moviedb.dart';
 
@@ -23,5 +25,26 @@ class MovieMapper {
         video: moviedb.video,
         voteAverage: moviedb.voteAverage,
         voteCount: moviedb.voteCount,
+      );
+
+  static movieDetailsToEntity(MovieDetails movie) => Movie(
+        adult: movie.adult,
+        backdropPath: movie.backdropPath != ''
+            ? 'https://image.tmdb.org/t/p/w500/${movie.backdropPath}'
+            : 'https://cdn.pixabay.com/photo/2016/11/16/11/29/coupon-1828620_1280.png',
+        genreIds: movie.genres.map((e) => e.name).toList(),
+        id: movie.id,
+        originalLanguage: movie.originalLanguage,
+        originalTitle: movie.originalTitle,
+        overview: movie.overview,
+        popularity: movie.popularity,
+        posterPath: movie.posterPath != ''
+            ? 'https://image.tmdb.org/t/p/w500/${movie.posterPath}'
+            : 'no-poster',
+        releaseDate: movie.releaseDate,
+        title: movie.title,
+        video: movie.video,
+        voteAverage: movie.voteAverage,
+        voteCount: movie.voteCount,
       );
 }
