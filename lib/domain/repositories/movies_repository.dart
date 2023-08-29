@@ -1,4 +1,5 @@
 import 'package:cinemapedia_app/domain/entities/movie.dart';
+import 'package:cinemapedia_app/domain/entities/video.dart';
 
 // Interfaz(repositorio) que define los métodos que deben implementar los repositorios de películas
 // Reglas de negocio
@@ -12,4 +13,8 @@ abstract class MoviesRepository {
   Future<Movie> getMovieById(String id);
   // Buscar películas
   Future<List<Movie>> searchMovies(String query);
+  // Video
+  Future<List<Video>> getYoutubeVideosById(int movieId);
+  // Similar movies
+  Future<List<Movie>> getSimilarMovies(int movieId);
 }

@@ -1,7 +1,5 @@
-import 'package:cinemapedia_app/infrastructure/models/moviedb/movie_details.dart';
-
-import '../../domain/entities/movie.dart';
-import '../models/moviedb/movie_moviedb.dart';
+import 'package:cinemapedia_app/domain/entities/movie.dart';
+import 'package:cinemapedia_app/infrastructure/models/models.dart';
 
 class MovieMapper {
 // Toma la respuesta de la API y la convierte en una entidad de dominio

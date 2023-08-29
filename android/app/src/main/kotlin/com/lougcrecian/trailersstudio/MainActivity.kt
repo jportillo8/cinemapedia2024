@@ -1,4 +1,4 @@
-package com.example.cinemapedia_app
+package com.lougcrecian.trailersstudio
 
 import io.flutter.embedding.android.FlutterActivity
 

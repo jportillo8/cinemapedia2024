@@ -62,7 +62,7 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, int index) =>
-                  FadeInRightBig(child: _Slide(movie: widget.movies[index])),
+                  ElasticIn(child: _Slide(movie: widget.movies[index])),
             ),
           ),
         ],
@@ -115,32 +115,18 @@ class _Slide extends StatelessWidget {
           /* Imagen */
           Stack(
             children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                child: SizedBox(
-                  width: 150,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      movie.posterPath,
-                      height: 200,
-                      width: 150,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress != null) {
-                          return const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                                heightFactor: 5,
-                                child: CircularProgressIndicator()),
-                          );
-                        }
-                        return GestureDetector(
-                            onTap: () =>
-                                context.push('/home/0/movie/${movie.id}'),
-                            child: FadeIn(child: child));
-                      },
-                    ),
+              SizedBox(
+                width: 150,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: GestureDetector(
+                    onTap: () => context.push('/home/0/movie/${movie.id}'),
+                    child: FadeInImage(
+                        height: 220,
+                        fit: BoxFit.cover,
+                        placeholder: const AssetImage(
+                            'assets/loaders/bottle-loader.gif'),
+                        image: NetworkImage(movie.posterPath)),
                   ),
                 ),
               ),

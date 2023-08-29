@@ -4,6 +4,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:animate_do/animate_do.dart';
 
 import 'package:cinemapedia_app/domain/entities/movie.dart';
+import 'package:go_router/go_router.dart';
 
 class MoviesSlideshow extends StatelessWidget {
   final List<Movie> movies;
@@ -58,23 +59,26 @@ class _Slide extends StatelessWidget {
       ],
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: DecoratedBox(
-        decoration: decoration,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.network(
-            movie.backdropPath,
-            fit: BoxFit.cover,
-            // Cuando la imagen se construye, se muestra el título de la película
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) {
-                return const DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.black12));
-              }
-              return FadeIn(child: child);
-            },
+    return GestureDetector(
+      onTap: () => context.push('/home/0/movie/${movie.id}'),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: DecoratedBox(
+          decoration: decoration,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              movie.backdropPath,
+              fit: BoxFit.cover,
+              // Cuando la imagen se construye, se muestra el título de la película
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress != null) {
+                  return const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black12));
+                }
+                return FadeIn(child: child);
+              },
+            ),
           ),
         ),
       ),

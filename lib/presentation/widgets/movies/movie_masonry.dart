@@ -37,7 +37,7 @@ class _MovieMasonryState extends State<MovieMasonry> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
       child: MasonryGridView.count(
@@ -50,7 +50,7 @@ class _MovieMasonryState extends State<MovieMasonry> {
           if (index == 1) {
             return Column(
               children: [
-                SizedBox(height: size.height * 0.05),
+                const SizedBox(height: 30),
                 MoviePosterLink(movie: widget.movies[index])
               ],
             );

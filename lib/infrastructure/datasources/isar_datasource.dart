@@ -1,7 +1,8 @@
 import 'package:cinemapedia_app/domain/datasources/local_storage_datasource.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
-import 'package:isar/isar.dart';
+
 import 'package:path_provider/path_provider.dart';
+import 'package:isar/isar.dart';
 
 class IsarDataSource extends LocalStorageDatasource {
   // Si la base de datos puede aceptar conecciones.

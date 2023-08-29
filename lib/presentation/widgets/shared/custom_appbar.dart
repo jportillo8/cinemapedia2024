@@ -23,7 +23,7 @@ class CustomAppbar extends ConsumerWidget {
             children: [
               Icon(Icons.movie, color: colors.primary),
               const SizedBox(width: 5),
-              Text('Cinemapedia', style: titleStyle),
+              Text('Trailers Studio', style: titleStyle),
               const Spacer(),
               IconButton(
                   onPressed: () {

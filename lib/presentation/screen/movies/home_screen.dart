@@ -5,11 +5,11 @@ import 'package:cinemapedia_app/presentation/widgets/widgets.dart';
 class HomeScreen extends StatelessWidget {
   final int pageIndex;
   static const String routeName = 'home-screen';
-  HomeScreen({super.key, required this.pageIndex});
+  const HomeScreen({super.key, required this.pageIndex});
 
   final viewRoutes = const <Widget>[
     HomeView(),
-    CategoriesView(),
+    PopularView(),
     FavoritesView(),
   ];
   @override

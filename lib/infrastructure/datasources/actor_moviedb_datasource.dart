@@ -1,7 +1,9 @@
 import 'package:cinemapedia_app/domain/datasources/actors_datasource.dart';
-import 'package:cinemapedia_app/domain/entities/actor.dart';
+import 'package:cinemapedia_app/domain/entities/entities.dart';
+
 import 'package:cinemapedia_app/infrastructure/mappers/actor_mapper.dart';
 import 'package:cinemapedia_app/infrastructure/models/moviedb/credits_response.dart';
+
 import 'package:dio/dio.dart';
 
 class ActorMovieDbDatasource extends ActorsDatasource {
