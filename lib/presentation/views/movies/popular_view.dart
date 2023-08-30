@@ -24,6 +24,10 @@ class PopularViewState extends ConsumerState<PopularView>
     }
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: popularMovies.isEmpty ? 0 : 4,
+        title: const Text('Las más populares'),
+      ),
       body: MovieMasonry(
           loadNextPage: () =>
               ref.read(popularMoviesProvider.notifier).loadNextPage(),

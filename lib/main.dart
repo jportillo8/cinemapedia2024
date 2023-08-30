@@ -9,16 +9,16 @@ import 'package:cinemapedia_app/config/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
-  final binding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: binding);
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // Inicializar date formats
   initializeDateFormatting('es_ES', null);
   // Cargar variables de entorno
   await dotenv.load(fileName: '.env');
   // ProviderScope para usar Riverpod
   runApp(const ProviderScope(child: MainApp()));
-  await Future.delayed(const Duration(milliseconds: 100));
-  FlutterNativeSplash.remove();
+  // await Future.delayed(const Duration(milliseconds: 1));
+  // FlutterNativeSplash.remove();
 }
 
 class MainApp extends StatelessWidget {

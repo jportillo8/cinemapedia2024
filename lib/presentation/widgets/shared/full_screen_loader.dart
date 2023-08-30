@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenLoader extends StatelessWidget {
@@ -23,15 +24,26 @@ class FullScreenLoader extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Cargando películas'),
-          const SizedBox(height: 10),
-          const CircularProgressIndicator(),
+          // Agregar gif de loading
+          Flash(
+            child: Image.asset(
+              'assets/loaders/logo.png',
+              height: 350,
+            ),
+          ),
+          // const Text('Cargando películas'),
+          // const SizedBox(height: 10),
+          const CircularProgressIndicator(
+            strokeWidth: 5,
+            backgroundColor: Colors.black12,
+          ),
           const SizedBox(height: 10),
           StreamBuilder<String>(
             stream: getLoadingMessages(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const SizedBox.shrink();
-              return Text(snapshot.data!);
+              return Text(snapshot.data!,
+                  style: Theme.of(context).textTheme.labelMedium);
             },
           ),
         ],

@@ -63,6 +63,9 @@ class FavoritesViewState extends ConsumerState<FavoritesView> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tus favoritas'),
+      ),
       body: MovieMasonry(
         loadNextPage: loadNextPage,
         movies: favorites,
